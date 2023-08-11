@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "button.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,37 +54,31 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t btn_current = 1;
-uint8_t btn_last = 1;
-uint8_t btn_filter = 1;
-uint8_t is_debouncing;
-uint32_t time_debounce;
-uint32_t time_start_press;
-uint8_t is_press_timeout;
 
 //========================== LED =============================
-typedef enum{
-	LED_OFF,
-	LED1_BLINK_1HZ,
-	LED1_BLINK_5HZ,
-}LedStatus;
-LedStatus led_status = LED_OFF;
+//typedef enum{
+//	LED_OFF,
+//	LED1_BLINK_1HZ,
+//	LED1_BLINK_5HZ,
+//}LedStatus;
+//LedStatus led_status = LED_OFF;
 
 void btn_pressing_callback(){
-	switch(led_status)
-	{
-		case LED_OFF:
-				led_status = LED1_BLINK_1HZ;
-			break;
-		case LED1_BLINK_1HZ:
-				led_status = LED1_BLINK_5HZ;
-			break;
-		case LED1_BLINK_5HZ:
-				led_status = LED_OFF;
-			break;
-	}
+//	switch(led_status)
+//	{
+//		case LED_OFF:
+//				led_status = LED1_BLINK_1HZ;
+//			break;
+//		case LED1_BLINK_1HZ:
+//				led_status = LED1_BLINK_5HZ;
+//			break;
+//		case LED1_BLINK_5HZ:
+//				led_status = LED_OFF;
+//			break;
+//	}
 }
 void btn_release_callback(){
+	
 }
 void btn_press_short_callback(){  // nhan nha ra luon
 	
@@ -92,65 +86,29 @@ void btn_press_short_callback(){  // nhan nha ra luon
 void btn_press_long_callback(){
 
 }
+//void ledbink1hz(){
 
-void button_handle(){
-	uint8_t sta = HAL_GPIO_ReadPin(button_GPIO_Port, button_Pin);
-	if(sta != btn_filter){
-		btn_filter = sta; // có su thay doi trang thai thi gan trang thai vao button filter
-		is_debouncing = 1;
-		time_debounce = HAL_GetTick();
-	}
-	// xu ly debounce
-	if(is_debouncing == 1 && HAL_GetTick() - time_debounce >= 15){
-		btn_current = btn_filter;
-		is_debouncing = 0;
-	}
-	// xu li nhan nha
-	if(btn_current != btn_last){
-		if(btn_current == 0){ //Nhan xuong
-			is_press_timeout = 1;
-			btn_pressing_callback();
-			time_start_press = HAL_GetTick();
-		}
-		else {			// nha ra
-			if (HAL_GetTick() - time_start_press	<= 1000){
-					btn_press_short_callback();
-			}
-			btn_release_callback();
-			is_press_timeout = 0;
-		}
-		btn_last = btn_current;
-	}
-	// ===== nhan giu ===========
-	if(is_press_timeout && (HAL_GetTick() - time_start_press >= 3000))
-	{
-		btn_press_long_callback();
-		is_press_timeout = 0;
-	}
-}
-void ledbink1hz(){
+//}
+//void ledbink5hz(){
 
-}
-void ledbink5hz(){
+//}
 
-}
-
-// su kien nut nhan chuyen doi trang thai, con su kien led_handle xu ly trang thai nut nhan
-// goi led_handle trong ham main
-void led_handle(){
-		switch(led_status)
-	{
-		case LED_OFF:
-			//ahshas
-			break;
-		case LED1_BLINK_1HZ:
-				ledbink1hz();
-			break;
-		case LED1_BLINK_5HZ:
-				ledbink5hz();
-			break;
-	}
-}
+//// su kien nut nhan chuyen doi trang thai, con su kien led_handle xu ly trang thai nut nhan
+//// goi led_handle trong ham main
+//void led_handle(){
+//		switch(led_status)
+//	{
+//		case LED_OFF:
+//			//ahshas
+//			break;
+//		case LED1_BLINK_1HZ:
+//				ledbink1hz();
+//			break;
+//		case LED1_BLINK_5HZ:
+//				ledbink5hz();
+//			break;
+//	}
+//}
 /* USER CODE END 0 */
 
 /**
@@ -193,7 +151,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		button_handle();
-		led_handle();
+	//	led_handle();
   }
   /* USER CODE END 3 */
 }
