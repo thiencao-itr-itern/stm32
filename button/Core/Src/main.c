@@ -42,7 +42,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+Button_Typedef button1;
+Button_Typedef button2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -140,7 +141,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+	button_init(&button1, GPIOA, GPIO_PIN_0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -150,7 +151,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		button_handle();
+		button_handle(&button1);
+		
 	//	led_handle();
   }
   /* USER CODE END 3 */
